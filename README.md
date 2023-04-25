@@ -41,12 +41,6 @@ Laravel Multisms currently supports the following SMS providers:
 *   Sms.ir
 *   KavehNegar
 *   Ghasedak
-*   JusTextMe
-*   Edooneh
-*   PayamResan
-*   Farazsms
-*   SmsYar
-*   Razinama
 
 You can add more providers by implementing the `SmsProviderInterface` interface and adding the provider to the `config/multisms.php` file.
 
