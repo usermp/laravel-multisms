@@ -1,0 +1,16 @@
+{
+    "name": "usermp/laravel-multisms",
+    "description": "Laravel MultiSMS is a package that allows you to send SMS messages through multiple SMS providers in your Laravel application.",
+    "autoload": {
+        "psr-4": {
+            "Usermp\\MultiSms\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Mohammad",
+            "email": "usermp76@gmail.com"
+        }
+    ],
+    "require": {}
+}
