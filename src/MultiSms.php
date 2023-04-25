@@ -13,8 +13,8 @@ class MultiSms
 
     public function __construct()
     {
-        $this->config = config('Multisms');
-        $this->providers = config('Multisms.providers');
+        $this->config = config('multisms');
+        $this->providers = config('multisms.providers');
     }
 
     /**
