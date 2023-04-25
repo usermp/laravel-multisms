@@ -12,5 +12,6 @@
             "email": "usermp76@gmail.com"
         }
     ],
-    "require": {}
+    "require": {},
+    "license": "MIT"
 }
