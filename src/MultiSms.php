@@ -2,73 +2,57 @@
 
 namespace Usermp\MultiSms;
 
-use Exception;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Config;
 use Usermp\MultiSms\Exceptions\SmsException;
+use Usermp\MultiSms\Contracts\SmsProviderInterface;
 
 class MultiSms
 {
-    private $config;
-    private $providers;
+    protected SmsProviderInterface $provider;
+    protected array $providers;
+    protected string $defaultProviderName;
 
     public function __construct()
     {
-        $this->config = config('multisms');
-        $this->providers = config('multisms.providers');
+        $this->providers = Config::get('multisms.providers');
+        $this->defaultProviderName = Config::get('multisms.default');
+        $this->setProvider($this->defaultProviderName);
     }
 
-    /**
-     * Send an SMS message.
-     *
-     * @param string $to
-     * @param string $message
-     * @return bool
-     * @throws SmsException
-     */
-    public function send(string $to, string $message): bool
+    public function via(string $providerName): MultiSms
     {
-        $defaultProvider = $this->config['default_provider'];
+        $this->setProvider($providerName);
+        return $this;
+    }
 
-        // If there is no default provider set or the provider is not available, throw an exception.
-        if (!$defaultProvider || !isset($this->providers[$defaultProvider])) {
-            throw new SmsException('Default provider is not available.');
-        }
-
-        $providers = $this->providers;
-
-        // Shuffle providers to randomize the order of attempts.
-        // shuffle($providers);
-
-        foreach ($providers as $providerName => $provider) {
-            if (!isset($provider['class'])) {
-                throw new SmsException('SMS provider class not defined.');
-            }
-
-            $providerClass = $provider['class'];
-
-            if (!class_exists($providerClass)) {
-                throw new SmsException('SMS provider class not found.');
-            }
-
-            if (!isset($provider['config'])) {
-                throw new SmsException('SMS provider config not defined.');
-            }
-
-            $providerConfig = $provider['config'];
-
+    public function to(array $numbers, string $message): void
+    {
+        $errors = [];
+        foreach ($numbers as $number) {
             try {
-                $sms = new $providerClass($providerConfig);
-
-                $response = $sms->send($to, $message);
-
-                if ($response) {
-                    return true;
-                }
-            } catch (Exception $e) {
-                Log::error('Error sending SMS through provider ' . $providerName . ': ' . $e->getMessage());
+                $this->provider->sendMessage($number, $message);
+            } catch (SmsException $e) {
+                $errors[] = $e->getMessage();
+                $this->setProviderDown($this->provider);
             }
         }
 
-        throw new SmsException('Could not send SMS through any provider.');
+        if (count($errors) > 0) {
+            throw new SmsException(implode(PHP_EOL, $errors));
+        }
+    }
+
+    protected function setProvider(string $providerName): void
+    {
+        $provider = $this->providers[$providerName];
+        $className = $provider['class'];
+        $this->provider = new $className($provider['config']);
+    }
+
+    protected function setProviderDown(SmsProviderInterface $provider): void
+    {
+        if (method_exists($provider, 'setDown')) {
+            $provider->setDown();
+        }
     }
 }
