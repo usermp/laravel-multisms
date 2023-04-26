@@ -32,6 +32,6 @@ class MultiSmsServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__.'/config/multisms.php' => config_path('multisms.php'),
-        ]);
+        ] , 'config');
     }
 }
