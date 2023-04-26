@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Usermp\MultiSms;
 
 use Illuminate\Support\ServiceProvider;
@@ -21,6 +20,8 @@ class MultiSmsServiceProvider extends ServiceProvider
         $this->app->singleton(MultiSms::class, function () {
             return new MultiSms();
         });
+
+        $this->app->alias(MultiSms::class, 'MultiSms');
     }
 
     /**
@@ -32,9 +33,6 @@ class MultiSmsServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__.'/config/multisms.php' => config_path('multisms.php'),
-        ] , 'config');
-
-        // Add the package facade to the aliases array in app.php
-        $this->app->alias(Facade::class, 'MultiSms');
+        ], 'config');
     }
 }
