@@ -33,5 +33,8 @@ class MultiSmsServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/config/multisms.php' => config_path('multisms.php'),
         ] , 'config');
+
+        // Add the package facade to the aliases array in app.php
+        $this->app->alias(Facade::class, 'MultiSms');
     }
 }
