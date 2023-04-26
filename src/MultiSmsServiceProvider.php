@@ -15,7 +15,7 @@ class MultiSmsServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../config/multisms.php', 'multisms'
+            __DIR__.'/config/multisms.php', 'multisms'
         );
 
         $this->app->singleton(MultiSms::class, function () {
@@ -31,7 +31,7 @@ class MultiSmsServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/../config/multisms.php' => config_path('multisms.php'),
+            __DIR__.'/config/multisms.php' => config_path('multisms.php'),
         ]);
     }
 }
