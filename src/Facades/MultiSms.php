@@ -8,6 +8,6 @@ class MultiSms extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'Multisms';
+        return 'MultiSms';
     }
 }
