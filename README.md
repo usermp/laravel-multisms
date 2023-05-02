@@ -10,6 +10,10 @@ You can install the package using Composer:
 
     composer require usermp/laravel-multisms
 
+open your config/app.php and add this line in providers section
+
+    Usermp\MultiSms\MultiSmsServiceProvider::class
+
 Publish the configuration file:
 
     php artisan vendor:publish --provider="Usermp\MultiSms\MultiSmsServiceProvider" --tag="config"
