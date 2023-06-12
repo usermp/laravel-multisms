@@ -14,6 +14,7 @@ class KavehnegarProvider implements SmsProviderInterface
 
     public function __construct(array $config)
     {
+        dd("asdasdasdasd");
         $this->config = $config;
         $this->httpClient = new HttpClient([
             'base_uri' => 'https://api.kavenegar.com/v1/',
