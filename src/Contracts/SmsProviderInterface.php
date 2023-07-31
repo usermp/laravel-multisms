@@ -6,5 +6,5 @@ use Usermp\MultiSms\Exceptions\SmsException;
 
 interface SmsProviderInterface
 {
-    public function sendMessage(mixed $number, string $message);
+    public function sendMessage(string|int $number, string $message);
 }
